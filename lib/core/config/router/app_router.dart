@@ -1,6 +1,9 @@
 import 'package:bmi_app/core/config/router/app_routes_name.dart';
 import 'package:bmi_app/modules/auth/presentation/screens/sign_in_screen.dart';
 import 'package:bmi_app/modules/auth/presentation/screens/register_screen.dart';
+import 'package:bmi_app/modules/bmi_calculator/data/models/bmi_calcultaor.dart';
+import 'package:bmi_app/modules/bmi_calculator/presentaion/screens/bmi_calculator_screen.dart';
+import 'package:bmi_app/modules/layout/presentation/screens/layout_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -8,8 +11,10 @@ class AppRouter {
     switch (settings.name) {
       case AppRoutes.signIn:
         return _createRoute(const SignInScreen());
-      case AppRoutes.register:
-        return _createRoute(const RegisterScreen());
+      case AppRoutes.layoutScreen:
+        return _createRoute(const LayoutScreen());
+      case AppRoutes.bmiCalculator:
+        return _createRoute(const BmiCalculatorScreen());
       default:
         return _createRoute(const SignInScreen());
     }

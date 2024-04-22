@@ -36,10 +36,10 @@ class SignInScreen extends StatelessWidget {
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is SignInSuccessState) {
-                      Navigator.pushNamed(context, AppRoutes.register);
+                      Navigator.pushNamed(context, AppRoutes.layoutScreen);
                     }
                     if (state is SignInFailureState) {
-                      Navigator.pushNamed(context, AppRoutes.register);
+                     // Navigator.pushNamed(context, AppRoutes.register);
                     }
                     if (state is AuthLoadingState) {
                       showAdaptiveDialog(
