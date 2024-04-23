@@ -1,3 +1,4 @@
+import 'package:bmi_app/core/components/loading_indicator.dart';
 import 'package:bmi_app/core/config/router/app_routes_name.dart';
 import 'package:bmi_app/core/constants/app_assets.dart';
 import 'package:bmi_app/core/constants/app_strings.dart';
@@ -6,7 +7,6 @@ import 'package:bmi_app/modules/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -39,17 +39,16 @@ class SignInScreen extends StatelessWidget {
                   BlocConsumer<AuthCubit, AuthState>(
                     listener: (context, state) {
                       if (state is SignInSuccessState) {
-                        
-                        Navigator.pushNamedAndRemoveUntil(context, AppRoutes.layoutScreen,(v)=>false);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, AppRoutes.layoutScreen, (v) => false);
                       }
-                      if (state is SignInFailureState) {
-                       // Navigator.pushNamed(context, AppRoutes.register);
-                      }
-                   
+                      if (state is SignInFailureState) {}
                     },
                     builder: (context, state) {
+                      if (state is AuthLoadingState) {
+                        return const LoadingIndicator();
+                      }
                       return ElevatedButton(
-                        
                           onPressed: () =>
                               context.read<AuthCubit>().signInAnonymously(),
                           child: const Text("Sign In Anonymously"));
@@ -64,7 +63,6 @@ class SignInScreen extends StatelessWidget {
     );
   }
 }
-
 
 void rebuildAllChildren(BuildContext context) {
   void rebuild(Element el) {

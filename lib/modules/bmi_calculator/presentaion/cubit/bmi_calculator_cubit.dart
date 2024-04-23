@@ -18,42 +18,19 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
   TextEditingController editWeightController = TextEditingController();
   TextEditingController editHeightController = TextEditingController();
 
-  clearControllers() {
-    ageController.clear();
-    weightController.clear();
-    heightController.clear();
-    editAgeController.clear();
-    editWeightController.clear();
-    editHeightController.clear();
-  }
-
+  String status = "";
+  double currentBmiRate = 0;
   Query<Object?> getBmicalculationHistory() {
     return _repository.getBmiEntriesHistory();
   }
 
-  String status = "";
-  double currentBmiRate = 0;
-  void saveCurrentBmiEntry() {
+  void saveCurrentBmiEntry(String id) {
     _repository.saveCurrentBmiEntry(BmiCalculator(
+        id: id,
         age: double.parse(ageController.text),
         weight: double.parse(weightController.text),
         height: double.parse(heightController.text),
         status: status));
-  }
-
-  void editBmiEntry(String id) {
-    currentBmiRate = (double.parse(editWeightController.text) /
-        math.pow((double.parse(editHeightController.text) / 100), 2));
-    currentBmiRate = double.parse(currentBmiRate.toStringAsFixed(1));
-    getBmiStatus(currentBmiRate);
-    _repository
-        .editBmiEntry(BmiCalculator(
-            id: id,
-            age: double.parse(editAgeController.text),
-            weight: double.parse(editWeightController.text),
-            height: double.parse(editHeightController.text),
-            status: status))
-        .then((value) => emit(EditBmiEntrySuccessState()));
   }
 
   void calculateBmiRate() {
@@ -78,10 +55,38 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
     emit(GetBmiStatusSuccessState());
   }
 
+  void editBmiEntry(String id) {
+    currentBmiRate = (double.parse(editWeightController.text) /
+        math.pow((double.parse(editHeightController.text) / 100), 2));
+    currentBmiRate = double.parse(currentBmiRate.toStringAsFixed(1));
+    getBmiStatus(currentBmiRate);
+    _repository
+        .editBmiEntry(BmiCalculator(
+            id: id,
+            age: double.parse(editAgeController.text),
+            weight: double.parse(editWeightController.text),
+            height: double.parse(editHeightController.text),
+            status: status))
+        .then((value) => emit(EditBmiEntrySuccessState()));
+  }
+
   void assignCurrentValuesToEditEntry(BmiCalculator entry) {
     editAgeController.text = entry.age.toString();
     editWeightController.text = entry.weight.toString();
     editHeightController.text = entry.height.toString();
     emit(AssignEditValuesSuccessState());
+  }
+
+  bool checkIfAnyFieldsEmypty() {
+    if (ageController.text.isEmpty ||
+        weightController.text.isEmpty ||
+        heightController.text.isEmpty) {
+       emit(BmiCalculatorInitial());
+      return true;
+    } else {
+      emit(BmiCalculatorInitial());
+      return false;
+    }
+  
   }
 }

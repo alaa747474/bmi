@@ -1,4 +1,3 @@
-import 'package:uuid/uuid.dart';
 
 class BmiCalculator {
   final double? age;
@@ -18,7 +17,7 @@ class BmiCalculator {
         if (height != null) 'weight': weight,
         if (weight != null) 'height': height,
         'status': status,
-        'id': const Uuid().v4(),
+        'id': id,
         'CalculationTime': DateTime.now().millisecondsSinceEpoch
       };
 

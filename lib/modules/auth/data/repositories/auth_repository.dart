@@ -21,5 +21,12 @@ class AuthRepository implements BaseAuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> signOut() async => await signOut();
+  Future<Either<Failure, void>> signOut() async {
+   try {
+      final result = await _dataSource.signOut();
+      return Right(result);
+    } on FirebaseAuthException catch (error) {
+      return Left(AuthFailure.fromFirebaseAuthException(error));
+    }
+  }
 }

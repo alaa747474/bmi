@@ -16,6 +16,9 @@ class CustomTextField extends StatelessWidget {
         Text(hintText,style: TextStyle(color: Theme.of(context).primaryColor),),
         SizedBox(height: 4.h,),
         TextFormField(
+          onTapOutside: (event) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
           controller: controller,
           keyboardAppearance: Brightness.dark,
            keyboardType: TextInputType.number,

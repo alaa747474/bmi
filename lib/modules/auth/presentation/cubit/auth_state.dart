@@ -16,4 +16,8 @@ class SignInFailureState extends AuthState {
   const SignInFailureState(this.error);
 }
 class SignOutSuccessState extends AuthState {}
-class SignOutFailureState extends AuthState {}
+class SignOutFailureState extends AuthState {
+  final AuthErrorModel error;
+
+  const SignOutFailureState(this.error);
+}

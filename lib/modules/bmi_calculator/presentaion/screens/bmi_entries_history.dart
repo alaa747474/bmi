@@ -1,5 +1,4 @@
 import 'package:bmi_app/core/components/loading_indicator.dart';
-import 'package:bmi_app/core/service/service_locator.dart';
 import 'package:bmi_app/modules/bmi_calculator/presentaion/widgtes/bmi_entry_card.dart';
 import 'package:bmi_app/modules/bmi_calculator/presentaion/widgtes/edit_bmi_entry_bottom_sheet.dart';
 import 'package:firebase_pagination/firebase_pagination.dart';
@@ -15,39 +14,36 @@ class BmiEntriesHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late BmiCalculator bmiCalculator;
-    return BlocProvider.value(
-      value: sl<BmiCalculatorCubit>(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Entries History"),
-        ),
-        body: BlocConsumer<BmiCalculatorCubit, BmiCalculatorState>(
-          builder: (context, state) {
-            return FirestorePagination(
-              isLive: true,
-              initialLoader: const Center(
-                child: LoadingIndicator(),
-              ),
-              bottomLoader: const LoadingIndicator(),
-              limit: 10,
-              query:
-                  context.read<BmiCalculatorCubit>().getBmicalculationHistory(),
-              itemBuilder: (context, dataSnapshot, index) {
-                bmiCalculator = BmiCalculator.fromJson(
-                    dataSnapshot.data() as Map<String, dynamic>);
-                return BmiEntryCard(bmi: bmiCalculator);
-              },
-            );
-          },
-          listener: (BuildContext context, BmiCalculatorState state) {
-            if (state is AssignEditValuesSuccessState) {
-              showEditBmiEntryBottomSheet(context, bmiCalculator);
-            }
-            if (state is EditBmiEntrySuccessState) {
-              Navigator.pop(context);
-            }
-          },
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Entries History"),
+      ),
+      body: BlocConsumer<BmiCalculatorCubit, BmiCalculatorState>(
+        builder: (context, state) {
+          return FirestorePagination(
+            isLive: true,
+            initialLoader: const Center(
+              child: LoadingIndicator(),
+            ),
+            bottomLoader: const LoadingIndicator(),
+            limit: 10,
+            query:
+                context.read<BmiCalculatorCubit>().getBmicalculationHistory(),
+            itemBuilder: (context, dataSnapshot, index) {
+              bmiCalculator = BmiCalculator.fromJson(
+                  dataSnapshot.data() as Map<String, dynamic>);
+              return BmiEntryCard(bmi: bmiCalculator);
+            },
+          );
+        },
+        listener: (BuildContext context, BmiCalculatorState state) {
+          if (state is AssignEditValuesSuccessState) {
+            showEditBmiEntryBottomSheet(context, bmiCalculator);
+          }
+          if (state is EditBmiEntrySuccessState) {
+            Navigator.pop(context);
+          }
+        },
       ),
     );
   }

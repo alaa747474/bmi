@@ -37,8 +37,7 @@ class BmiEntryCard extends StatelessWidget {
                                   .assignCurrentValuesToEditEntry(bmi);
                             },
                             icon: const Icon(Icons.edit)),
-                        IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.delete)),
+                     
                       ],
                     );
                   },
@@ -68,15 +67,13 @@ class RowDataItem extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
-              .copyWith(color: Colors.white),
+              .copyWith(color: Colors.white,fontSize: 14.sp),
         ),
         Text(
           value,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12.sp),
         )
       ],
     );
   }
 }
-
-

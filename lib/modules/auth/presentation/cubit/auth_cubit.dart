@@ -12,12 +12,12 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoadingState());
     final result = await _authRepository.signInAnonymously();
     result.fold((failure) => emit(SignInFailureState(failure.error)),
-        (r) => emit(SignInSuccessState()));
+        (success) => emit(SignInSuccessState()));
   }
   Future<void> signOut() async {
     emit(AuthLoadingState());
     final result = await _authRepository.signOut();
-    result.fold((failure) => emit(SignOutFailureState()),
-        (r) => emit(SignOutSuccessState()));
+    result.fold((failure) => emit(SignOutFailureState(failure.error)),
+        (success) => emit(SignOutSuccessState()));
   }
 }

@@ -18,11 +18,15 @@ class AppTheme {
           ),
           centerTitle: true),
       elevatedButtonTheme: ElevatedButtonThemeData(
+        
           style: ElevatedButton.styleFrom(
+        disabledBackgroundColor:const Color(0xff282A2C),
+        disabledForegroundColor: Colors.white10,
         fixedSize: Size(double.maxFinite, 50.h),
         shadowColor: Colors.green,
         elevation: 4,
-        foregroundColor: Colors.black,
+        
+        foregroundColor: Colors.white,
         backgroundColor: Colors.green,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.r),

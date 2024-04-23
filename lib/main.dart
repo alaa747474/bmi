@@ -2,6 +2,7 @@ import 'package:bmi_app/core/config/router/app_router.dart';
 import 'package:bmi_app/core/config/router/app_routes_name.dart';
 import 'package:bmi_app/core/config/theme/app_theme.dart';
 import 'package:bmi_app/firebase_options.dart';
+import 'package:bmi_app/modules/bmi_calculator/presentaion/cubit/bmi_calculator_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,12 +30,15 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'BMI CALCULATOR',
-        theme: AppTheme.theme(),
-        initialRoute: AppRoutes.signIn,
-        onGenerateRoute: AppRouter().onGenerateRoute,
+      builder: (context, child) => BlocProvider(
+        create: (context) => sl<BmiCalculatorCubit>(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'BMI CALCULATOR',
+          theme: AppTheme.theme(),
+          initialRoute: AppRoutes.signIn,
+          onGenerateRoute: AppRouter().onGenerateRoute,
+        ),
       ),
     );
   }
