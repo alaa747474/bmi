@@ -43,6 +43,9 @@ class BmiEntriesHistory extends StatelessWidget {
             if (state is AssignEditValuesSuccessState) {
               showEditBmiEntryBottomSheet(context, bmiCalculator);
             }
+            if (state is EditBmiEntrySuccessState) {
+              Navigator.pop(context);
+            }
           },
         ),
       ),

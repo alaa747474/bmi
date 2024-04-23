@@ -33,7 +33,7 @@ class BmiCalculatorDataSource extends BaseBmiCalculatorDataSource {
         .doc(_auth.currentUser!.uid)
         .collection("bmihistory")
         .where("id", isEqualTo: entry.id);
-    query.get().then((value) {
+  await  query.get().then((value) {
       for (var element in value.docs) {
         _firebaseFirestore
             .collection("users")

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math' as math;
 import 'package:bloc/bloc.dart';
 import 'package:bmi_app/modules/bmi_calculator/data/repositories/base_bmi_calculator_repository.dart';
@@ -18,8 +17,8 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
   TextEditingController editAgeController = TextEditingController();
   TextEditingController editWeightController = TextEditingController();
   TextEditingController editHeightController = TextEditingController();
-  
-  clearControllers(){
+
+  clearControllers() {
     ageController.clear();
     weightController.clear();
     heightController.clear();
@@ -27,6 +26,7 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
     editWeightController.clear();
     editHeightController.clear();
   }
+
   Query<Object?> getBmicalculationHistory() {
     return _repository.getBmiEntriesHistory();
   }
@@ -42,14 +42,17 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
   }
 
   void editBmiEntry(String id) {
-    //calculateBmiRate();
+    currentBmiRate = (double.parse(editWeightController.text) /
+        math.pow((double.parse(editHeightController.text) / 100), 2));
+    currentBmiRate = double.parse(currentBmiRate.toStringAsFixed(1));
+    getBmiStatus(currentBmiRate);
     _repository
         .editBmiEntry(BmiCalculator(
             id: id,
             age: double.parse(editAgeController.text),
             weight: double.parse(editWeightController.text),
             height: double.parse(editHeightController.text),
-            status:status ))
+            status: status))
         .then((value) => emit(EditBmiEntrySuccessState()));
   }
 
@@ -74,7 +77,8 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
     }
     emit(GetBmiStatusSuccessState());
   }
- void assignCurrentValuesToEditEntry(BmiCalculator entry){
+
+  void assignCurrentValuesToEditEntry(BmiCalculator entry) {
     editAgeController.text = entry.age.toString();
     editWeightController.text = entry.weight.toString();
     editHeightController.text = entry.height.toString();
