@@ -18,7 +18,9 @@ class BmiCalculatorScreen extends StatelessWidget {
       body: BlocConsumer<BmiCalculatorCubit, BmiCalculatorState>(
         listener: (context, state) {
           if (state is CalculateBmiStatusSuccessState) {
-            context.read<BmiCalculatorCubit>().saveCurrentBmiEntry(const Uuid().v4());
+            context
+                .read<BmiCalculatorCubit>()
+                .saveCurrentBmiEntry(const Uuid().v4());
           }
         },
         builder: (context, state) {
@@ -66,8 +68,17 @@ class BmiCalculatorScreen extends StatelessWidget {
                     dimension: 32.h,
                   ),
                   ElevatedButton(
-                      onPressed: context.read<BmiCalculatorCubit>().checkIfAnyFieldsEmypty()?null: () {
-                        context.read<BmiCalculatorCubit>().calculateBmiRate();
+                      onPressed: () {
+                        if (context
+                            .read<BmiCalculatorCubit>()
+                            .checkIfAnyFieldsEmypty()) {
+                              showDialog(context: context, builder: (context) =>  AlertDialog(
+                                title: Text("Error",style: Theme.of(context).textTheme.bodyLarge,),
+                                content: const Text("Please fill all fields"),
+                              ));
+                        }else{
+                           context.read<BmiCalculatorCubit>().calculateBmiRate();
+                        }
                       },
                       child: const Text("Calculate"))
                 ],

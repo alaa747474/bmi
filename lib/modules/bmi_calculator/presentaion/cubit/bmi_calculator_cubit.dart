@@ -81,10 +81,8 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
     if (ageController.text.isEmpty ||
         weightController.text.isEmpty ||
         heightController.text.isEmpty) {
-       emit(BmiCalculatorInitial());
       return true;
     } else {
-      emit(BmiCalculatorInitial());
       return false;
     }
   

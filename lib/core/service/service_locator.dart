@@ -29,5 +29,4 @@ Future<void> setUpServiceLocator() async {
    //* BLOCS
  sl.registerFactory<AuthCubit>(() => AuthCubit(sl()));
  sl.registerFactory<BmiCalculatorCubit>(() => BmiCalculatorCubit(sl()));
-// sl.registerSingleton<BmiCalculatorCubit>(BmiCalculatorCubit(sl()));
 }
