@@ -46,7 +46,7 @@ class BmiPointer extends StatelessWidget {
           ], annotations: <GaugeAnnotation>[
             GaugeAnnotation(
                 widget: Text(
-                    'BMI = ${context.read<BmiCalculatorCubit>().currentBmiRate}${context.read<BmiCalculatorCubit>().status}',
+                    'BMI = ${context.read<BmiCalculatorCubit>().currentBmiRate}',
                     style: Theme.of(context).textTheme.titleMedium),
                 angle: 90,
                 positionFactor: 0.7)

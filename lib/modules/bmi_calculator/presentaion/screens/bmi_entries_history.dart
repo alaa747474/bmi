@@ -24,6 +24,7 @@ class BmiEntriesHistory extends StatelessWidget {
         body: BlocConsumer<BmiCalculatorCubit, BmiCalculatorState>(
           builder: (context, state) {
             return FirestorePagination(
+              isLive: true,
               initialLoader: const Center(
                 child: LoadingIndicator(),
               ),

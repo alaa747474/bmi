@@ -19,7 +19,14 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
   TextEditingController editWeightController = TextEditingController();
   TextEditingController editHeightController = TextEditingController();
   
-
+  clearControllers(){
+    ageController.clear();
+    weightController.clear();
+    heightController.clear();
+    editAgeController.clear();
+    editWeightController.clear();
+    editHeightController.clear();
+  }
   Query<Object?> getBmicalculationHistory() {
     return _repository.getBmiEntriesHistory();
   }
