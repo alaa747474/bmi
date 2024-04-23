@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:math' as math;
 import 'package:bloc/bloc.dart';
 import 'package:bmi_app/modules/bmi_calculator/data/repositories/base_bmi_calculator_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/bmi_calcultaor.dart';
@@ -13,18 +15,35 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
   TextEditingController ageController = TextEditingController();
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
-  Stream<List<BmiCalculator>> getBmicalculationHistory() {
-    return _repository.getBmicalculationHistory();
+  TextEditingController editAgeController = TextEditingController();
+  TextEditingController editWeightController = TextEditingController();
+  TextEditingController editHeightController = TextEditingController();
+  
+
+  Query<Object?> getBmicalculationHistory() {
+    return _repository.getBmiEntriesHistory();
   }
 
   String status = "";
   double currentBmiRate = 0;
-  void saveCalculation() {
-    _repository.saveCurrentcalculation(BmiCalculator(
-        double.parse(ageController.text),
-        double.parse(weightController.text),
-        double.parse(heightController.text),
-        status));
+  void saveCurrentBmiEntry() {
+    _repository.saveCurrentBmiEntry(BmiCalculator(
+        age: double.parse(ageController.text),
+        weight: double.parse(weightController.text),
+        height: double.parse(heightController.text),
+        status: status));
+  }
+
+  void editBmiEntry(String id) {
+    //calculateBmiRate();
+    _repository
+        .editBmiEntry(BmiCalculator(
+            id: id,
+            age: double.parse(editAgeController.text),
+            weight: double.parse(editWeightController.text),
+            height: double.parse(editHeightController.text),
+            status:status ))
+        .then((value) => emit(EditBmiEntrySuccessState()));
   }
 
   void calculateBmiRate() {
@@ -47,5 +66,11 @@ class BmiCalculatorCubit extends Cubit<BmiCalculatorState> {
         status = "obesity";
     }
     emit(GetBmiStatusSuccessState());
+  }
+ void assignCurrentValuesToEditEntry(BmiCalculator entry){
+    editAgeController.text = entry.age.toString();
+    editWeightController.text = entry.weight.toString();
+    editHeightController.text = entry.height.toString();
+    emit(AssignEditValuesSuccessState());
   }
 }

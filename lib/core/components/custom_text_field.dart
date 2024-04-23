@@ -14,16 +14,18 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(hintText,style: TextStyle(color: Theme.of(context).primaryColor),),
+        SizedBox(height: 4.h,),
         TextFormField(
           controller: controller,
           keyboardAppearance: Brightness.dark,
-          keyboardType: TextInputType.number,
+           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           style: const TextStyle(color: Colors.white),
           textAlign: TextAlign.center,
           cursorColor: Theme.of(context).primaryColor,
           decoration: InputDecoration(
             hintText: hintText,
+            hintStyle: TextStyle(color: Theme.of(context).hintColor,fontSize: 12.sp),
             filled: true,
             fillColor: Theme.of(context).cardColor,
             enabled: true,

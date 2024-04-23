@@ -7,6 +7,7 @@ import 'package:bmi_app/modules/bmi_calculator/data/datasources/base_bmi_calcula
 import 'package:bmi_app/modules/bmi_calculator/data/datasources/bmi_calculator_data_source.dart';
 import 'package:bmi_app/modules/bmi_calculator/data/repositories/base_bmi_calculator_repository.dart';
 import 'package:bmi_app/modules/bmi_calculator/data/repositories/bmi_calculator_repository.dart';
+import 'package:bmi_app/modules/bmi_calculator/presentaion/cubit/bmi_calculator_cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -14,13 +15,18 @@ import 'package:get_it/get_it.dart';
 GetIt sl = GetIt.instance;
 
 Future<void> setUpServiceLocator() async {
+  //* AUTH
   sl.registerLazySingleton<BaseAuthDataSource>(
       () => AuthDataSource(FirebaseAuth.instance));
   sl.registerLazySingleton<BaseAuthRepository>(() => AuthRepository(sl()));
-  sl.registerFactory<AuthCubit>(() => AuthCubit(sl()));
+  //* BMI
   sl.registerLazySingleton<BaseBmiCalculatorDataSource>(() =>
       BmiCalculatorDataSource(
           FirebaseFirestore.instance, FirebaseAuth.instance));
   sl.registerLazySingleton<BaseBmiCalculatorRepository>(
       () => BmiCalculatorRepository(sl()));
+
+   //* BLOCS
+ sl.registerFactory<AuthCubit>(() => AuthCubit(sl()));
+ sl.registerSingleton<BmiCalculatorCubit>(BmiCalculatorCubit(sl()));
 }
