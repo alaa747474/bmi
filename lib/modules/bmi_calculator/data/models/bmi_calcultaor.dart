@@ -1,17 +1,30 @@
-class BmiCalculator {
-  final double age;
-  final double weight;
-  final double height;
-  final String status;
-  BmiCalculator(this.age, this.weight, this.height, this.status);
 
-  Map<String, dynamic> toJson() =>
-      {'age': age, 'weight': weight, 'height': height,'status':status,'CalculationTime':DateTime.now().millisecondsSinceEpoch};
+class BmiCalculator {
+  final double? age;
+  final double? weight;
+  final double? height;
+  final String status;
+  final String? id;
+  BmiCalculator(
+      {required this.age,
+      required this.weight,
+      required this.height,
+      required this.status,
+      this.id});
+
+  Map<String, dynamic> toJson() => {
+        if (age != null) 'age': age,
+        if (height != null) 'weight': weight,
+        if (weight != null) 'height': height,
+        'status': status,
+        'id': id,
+        'CalculationTime': DateTime.now().millisecondsSinceEpoch
+      };
 
   factory BmiCalculator.fromJson(Map<String, dynamic> json) => BmiCalculator(
-        json['age'],
-        json['weight'],
-        json['height'],
-        json['status'],
-      );
+      age: json['age'],
+      weight: json['weight'],
+      height: json['height'],
+      status: json['status'],
+      id: json['id']);
 }

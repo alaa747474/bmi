@@ -1,4 +1,6 @@
-import 'package:bmi_app/core/service/firestore_services.dart';
+import 'dart:developer';
+
+import 'package:bmi_app/core/constants/firestore_collections.dart';
 import 'package:bmi_app/modules/bmi_calculator/data/models/bmi_calcultaor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,23 +13,40 @@ class BmiCalculatorDataSource extends BaseBmiCalculatorDataSource {
 
   BmiCalculatorDataSource(this._firebaseFirestore, this._auth);
   @override
-  Stream<List<BmiCalculator>> getBmicalculationHistory() {
-    return _firebaseFirestore
-        .collection("users")
+  Query<Object?> getBmicalculationHistory() => _firebaseFirestore
+      .collection("users")
+      .doc(_auth.currentUser!.uid)
+      .collection("bmihistory")
+      .orderBy("CalculationTime", descending: true);
+
+  @override
+  Future<void> saveCurrentBmiEntry(BmiCalculator bmiCalculation) async {
+    await _firebaseFirestore
+        .collection(FirestoreCollections.instance.users)
         .doc(_auth.currentUser!.uid)
-        .collection("bmihistory").orderBy("CalculationTime")
-        .snapshots()
-        .map((event) {
-      return event.docs.map((e) => BmiCalculator.fromJson(e.data())).toList();
-    });
+        .collection(FirestoreCollections.instance.bmiEntriesHistory)
+        .add(bmiCalculation.toJson());
   }
 
   @override
-  Future<void> saveCurrentcalculation(BmiCalculator bmiCalculation) async {
-    await _firebaseFirestore
-        .collection("users")
+  Future<void> editBmiEntry(BmiCalculator entry) async {
+    _firebaseFirestore
+        .collection(FirestoreCollections.instance.users)
         .doc(_auth.currentUser!.uid)
-        .collection("bmihistory")
-        .add(bmiCalculation.toJson());
+        .collection(FirestoreCollections.instance.bmiEntriesHistory)
+        .where("id", isEqualTo: entry.id)
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        log("Id  ====>  ${element.id} ========== ENTRY ID ${entry.id}");
+        log("DOCS  ====>  $element");
+        _firebaseFirestore
+            .collection(FirestoreCollections.instance.users)
+            .doc(_auth.currentUser!.uid)
+            .collection(FirestoreCollections.instance.bmiEntriesHistory)
+            .doc(element.id)
+            .update(entry.toJson());
+      }
+    });
   }
 }

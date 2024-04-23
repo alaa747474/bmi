@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../cubit/layout_cubit.dart';
 
@@ -14,16 +15,15 @@ class LayoutScreen extends StatelessWidget {
         buildWhen: (previous, current) => current is ChangeBottomNavBarIndex,
         builder: (context, state) {
           return Scaffold(
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+            extendBody: true,
+            bottomNavigationBar: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: Container(
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
                           color: Colors.black87.withOpacity(0.1),
-                          spreadRadius: 4,
+                          spreadRadius: 14,
                           blurRadius: 20),
                     ],
                     color: Theme.of(context).cardColor,
@@ -48,11 +48,14 @@ class LayoutScreen extends StatelessWidget {
                             icon: Icon(Icons.home), label: "Home"),
                         BottomNavigationBarItem(
                             icon: Icon(Icons.history), label: "History"),
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.settings), label: "Settings"),
                       ]),
                 ),
               ),
             ),
-            body: IndexedStack(
+            body:
+             IndexedStack(
               index: context.read<LayoutCubit>().currentIndex,
               children: context.read<LayoutCubit>().screens,
             ),
